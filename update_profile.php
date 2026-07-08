@@ -1,23 +1,25 @@
 <?php
-
+session_start();
 include 'db.php';
 
-$id = $_POST['id'];
+if(!isset($_SESSION['user_id'])) {
+    die("Akses ditolak");
+}
 
+$id = $_SESSION['user_id'];
 $name = $_POST['name'];
+$email = trim($_POST['email']);
 
-$email = $_POST['email'];
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    die("Format email salah");
+}
 
-$sql = "
-UPDATE users
-SET
-name='$name',
-email='$email'
-WHERE id='$id'
-";
+$stmt = mysqli_prepare($conn, "UPDATE users SET name=?, email=? WHERE id=?");
+mysqli_stmt_bind_param($stmt, "ssi", $name, $email, $id);
 
-mysqli_query($conn,$sql);
-
-echo "Berhasil";
-
+if(mysqli_stmt_execute($stmt)) {
+    echo "Berhasil";
+} else {
+    echo "Gagal update";
+}
 ?>
